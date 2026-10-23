@@ -8,13 +8,13 @@ cask "mumble-native" do
   homepage "https://www.mumble.info/"
 
   depends_on arch: :arm64
-  depends_on macos: ">= :golden_gate"
+  depends_on macos: :golden_gate
 
   app "Mumble.app"
 
   # The app is ad-hoc signed, so remove the quarantine flag after install.
   # Without this, Gatekeeper requires a right-click Open on first launch.
-  postflight do
-    system_command "/usr/bin/xattr", args: ["-cr", "#{appdir}/Mumble.app"]
+  postflight_steps do
+    run "/usr/bin/xattr", args: ["-cr", "{{appdir}}/Mumble.app"], must_succeed: false
   end
 end
